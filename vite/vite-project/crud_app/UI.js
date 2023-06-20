@@ -54,21 +54,38 @@ export class UI {
         cityInput.value="";
         ageInput.value="";
      }
-     static editUser(target,userList){
+    static editUser(target,userList){
         // const userTable = document.querySelector("#userTable");
         const index=target.getAttribute("data-id-edit")
         const user=userList[index];
-        target.parentElement.parentElement.innerHTML=`<th>${user.id}</th>
-                                                      <th><input type="text"  class="form-control" id="nameInputEdit${index}" value="${user.name}"></th>
-                                                      <th><input type="text"  class="form-control" id="surnameInputEdit${index}" value="${user.surname}"></th>
-                                                      <th><input type="text"  class="form-control" id="cityInputEdit${index}" value="${user.city}"></th>
-                                                      <th><input type="number"  class="form-control" id="ageInputEdit${index}" value="${user.age}"></th>
-                                                      <th><i class="fa-regular fa-circle-check btn btn-primary save mt-1" data-id-save="${index}"></i></th>`
-      
+        let tr=target.parentElement.parentElement;
+        tr.innerHTML=``;
+        for (const key in user) {
+          const th=document.createElement("th");
+          const input=document.createElement("input");
+          if(key==="id"){
+            const text=document.createTextNode(`${user[key]}`);
+            th.appendChild(text);
+            tr.appendChild(th);
+            continue;
+          }
+          if(key==="age"){
+            input.type="number";
+          }
+          input.value=user[key];
+          input.classList.add("form-control");
+          input.id=`${key}InputEdit${index}`;
+          th.appendChild(input)
+          tr.appendChild(th)  
+        }
+         const saveBtnTH=document.createElement("th");
+        const i =document.createElement("i");
+        i.classList="fa-regular fa-circle-check btn btn-primary save mt-1";
+        i.setAttribute("data-id-save", index);
+        saveBtnTH.appendChild(i);
+        tr.appendChild(saveBtnTH);                                     
                                                  
-                                                 
-                                                 
-                 }
+           }
      static addUser(){
         const user=new User(nameInput.value,surnameInput.value,cityInput.value,ageInput.value);
      }
